@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import WeatherForm from "./WeatherForm";
 import WeatherMainInfo from "./WeatherMainInfo";
 import styles from './weatherApp.module.css'
+import Loading from "./loading";
 
 
 function WeatherApp(){
@@ -21,14 +22,11 @@ function WeatherApp(){
             );
 
             const json = await request.json();
-            console.log("API RESPONSE:", json);
-
-            if (json.error) {
-                console.error("API ERROR:", json.error.message);
-                return;
-            }
-
-            setWeather(json);
+            
+            setTimeout(()=>{
+                setWeather(json);
+            }, 2000);
+            
 
         } catch (error){
             console.error("FETCH ERROR:", error);
@@ -44,7 +42,8 @@ function WeatherApp(){
     return(
         <div className={styles.weatherContainer}>
             <WeatherForm onChangeCity={handleOnchangeCity} />
-            <WeatherMainInfo weather={weather} />
+            {weather?<WeatherMainInfo weather={weather} /> : <Loading/> }
+            
         </div>
     )
 }
