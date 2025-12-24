@@ -1,19 +1,24 @@
+import styles from './WeatherMainInfo.module.css'
 
 function WeatherMainInfo({weather}){
     return(
         <div>
-            <div>
-                <p>{weather?.location.name}</p>
-                <p>{weather?.location.country}</p>
-                <div>
-                    <img src={`http:${weather?.current.condition.icon}`} 
-                    width="128" 
-                    alt={weather?.current.condition.icon}/>
-                </div>
-                <div>
+            <div className={styles.mainInfo}>
+                <p className={styles.city}>{weather?.location.name}</p>
+                <p className={styles.country}>{weather?.location.country}</p>
+                <div className={styles.row}>
                     <div>
-                        <p>{weather?.current.condition.text}</p>
-                        <p>{weather?.current.temp_c}°C</p>
+                        <img src={`http:${weather?.current.condition.icon}`} 
+                        width="128" 
+                        alt={weather?.current.condition.icon}/>
+                    </div>
+                    <div className={styles.weatherConditions}>
+                        <p className={styles.condition}>
+                            {weather?.current.condition.text}
+                        </p>
+                        <p className={styles.current}>
+                            {weather?.current.temp_c}°C
+                        </p>
                     </div>
                     
                 </div>
@@ -22,7 +27,7 @@ function WeatherMainInfo({weather}){
                 <div>
                     <iframe 
                     src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d62879.45510818271!2d${weather?.location.lon}6!3d${weather?.location.lat}7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2scr!4v1766544227571!5m2!1ses-419!2scr`}
-                    width="600" 
+                    width="100%" 
                     height="450" 
                     style={{border:0}}
                     allowfullscreen 
