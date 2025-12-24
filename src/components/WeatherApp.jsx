@@ -5,7 +5,13 @@ import WeatherForm from "./WeatherForm";
 function WeatherApp(){
     const [weather, setWeather]=useState(null);
 
-    
+    useEffect(()=>{
+        loadInfo();
+    }, [])
+
+    useEffect(()=>{
+        document.title = `Weather | ${weather?.location.name ?? ""}`;
+    }, [weather])
     
     async function loadInfo(city = "london"){
         try {
