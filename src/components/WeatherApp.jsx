@@ -7,6 +7,7 @@ import Loading from "./loading";
 
 function WeatherApp(){
     const [weather, setWeather]=useState(null);
+    const [error, setError]=useState(null);
 
     useEffect(()=>{
         loadInfo();
@@ -17,19 +18,27 @@ function WeatherApp(){
     }, [weather])
     
     async function loadInfo(city = "london"){
+        setError(null);
         try {
             const request = await fetch(`${import.meta.env.VITE_WEATHER_URL}key=${import.meta.env.VITE_WEATHER_KEY}&q=${encodeURIComponent(city)}`
             );
 
             const json = await request.json();
+
+            if (json.error) {
+            setError(json.error.message);
+            setWeather(null);
+            return;
+            }
             
             setTimeout(()=>{
                 setWeather(json);
             }, 2000);
             
 
-        } catch (error){
-            console.error("FETCH ERROR:", error);
+        } catch (error) {
+            setError("Error al conectar con el servidor");
+            setWeather(null);
         }
 
     }
@@ -42,7 +51,8 @@ function WeatherApp(){
     return(
         <div className={styles.weatherContainer}>
             <WeatherForm onChangeCity={handleOnchangeCity} />
-            {weather?<WeatherMainInfo weather={weather} /> : <Loading/> }
+            {error && <p className={styles.error}>{error}</p>}
+            {!error && (weather ? <WeatherMainInfo weather={weather} /> : <Loading />)}
             
         </div>
     )
